@@ -1,0 +1,1548 @@
+<!doctype html>
+<html lang="ur" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Bakrapari.pk — Online Janwar Market </title>
+  <style>
+    :root{
+      --primary:#00a871; --accent:#ffe157; --bg:#f7fbf7; --card:#fff;
+      --footer-dark:#083a2b; --footer-accent:#1bbb94; --footer-text:#f4f6f5;
+      --footer-link:#e5ffea;
+      --marquee-glow:#2bee98;
+      --marquee-shadow:#bbe0c0;
+      --marquee-gradient: linear-gradient(90deg,#e0fff2 0%,#feffe5 100%);
+      --marquee-card-glow:#fffec111;
+    }
+    body{font-family:Segoe UI, Noto Nastaliq Urdu, Arial; margin:0; background:var(--bg); color:#114;}
+    main{max-width:1100px;margin:18px auto;padding:14px;}
+    header{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px;border-radius:12px;background:linear-gradient(90deg,#eefdf2,#fff);box-shadow:0 6px 28px rgba(20,90,60,0.06)}
+    h1{margin:0;font-size:1.3rem;color:var(--primary)}
+    .controls{display:flex;gap:8px;align-items:center}
+    select,input[type=search]{padding:8px;border-radius:8px;border:1px solid #d6e9df}
+    button.btn{background:var(--primary);color:#fff;padding:9px 12px;border-radius:8px;border:0;cursor:pointer}
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px;margin-top:18px}
+    .card{background:var(--card);border-radius:12px;padding:10px;box-shadow:0 6px 20px rgba(0,0,0,0.06);text-align:right;overflow:hidden}
+    .card img{width:100%;height:170px;object-fit:cover;border-radius:8px}
+    .card h3{margin:8px 0 4px 0;color:#0b6}
+    .attr{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end;font-size:0.95rem}
+    .buy-btn{width:100%;margin-top:10px;padding:10px;border-radius:8px;border:0;background:linear-gradient(90deg,#ffe157,#69df8b);font-weight:800;cursor:pointer}
+    .edit-btn{width:100%;margin-top:7px;padding:8px;border-radius:8px;border:0;background:linear-gradient(90deg,#dbeeff,#4dd0c6);font-weight:700;cursor:pointer;color:#184d55;font-size:0.99rem;}
+    .checkout-btn{width:100%;margin-top:10px;padding:10px;border-radius:8px;border:0;background:linear-gradient(90deg,#69df8b,#ffe157);font-weight:800;cursor:pointer;color:#222}
+
+    /* WhatsApp and Corner Pay (Payment) fixed buttons styling */
+    .whatsapp-fixed, .cornerpay-btn {
+      position: fixed;
+      z-index: 9900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.13);
+      border: none;
+      cursor: pointer;
+      background: #25d366;
+      color: #fff;
+      border-radius: 60px 999px 999px 60px;
+      right: 20px;
+      width: 86px;
+      height: 66px;
+      font-size: 36px;
+      transition: background 0.2s;
+      flex-direction: row;
+      padding-right: 12px;
+      padding-left: 2px;
+      gap: 7px;
+    }
+    .whatsapp-fixed { bottom: 28px;}
+    .cornerpay-btn { bottom: 110px; background: #3e4298; color: #fff; }
+    .cornerpay-btn:hover { background: #474fcf;}
+    .cornerpay-btn .cornerpay-icon {
+      width: 36px;
+      height: 36px;
+      margin-left: 5px;
+      margin-right: 0;
+      display: inline-block;
+      vertical-align: middle;
+    }
+    .cornerpay-label {
+      font-family: inherit;
+      font-size: 1.15rem;
+      color: #fff;
+      font-weight: bold;
+      margin-left: 8px;
+      margin-right: 0;
+      letter-spacing: 0.1px;
+      user-select: none;
+    }
+    .whatsapp-fixed:hover {background: #128c7e;}
+    .whatsapp-fixed .whatsapp-icon {margin-left: 0; margin-right: 0; width: 44px; height: 44px;}
+    .whatsapp-fixed-label {
+      font-family: inherit;
+      font-size: 1.28rem;
+      color: #fff;
+      font-weight: bold;
+      margin-left: 8px;
+      margin-right: 0;
+      letter-spacing: 0.1px;
+      user-select: none;
+    }
+    .whatsapp-icon {
+      width:32px;
+      height:32px;
+      margin-left:5px;
+      display:inline-block;
+      vertical-align:middle;
+    }
+    /* Payment Modal Styling */
+    .cornerpay-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 15000;
+      background: rgba(0,0,0,0.37);
+      align-items: center;
+      justify-content: center;
+    }
+    .cornerpay-modal .inner {
+      background: #fff;
+      border-radius: 15px;
+      max-width: 350px;
+      width: 96vw;
+      padding: 23px 13px 18px 13px;
+      box-shadow: 0 6px 40px #013f2837;
+      position: relative;
+      text-align: right;
+      direction: rtl;
+      font-family: inherit;
+      font-size: 1.05rem;
+    }
+    .cornerpay-closeX {
+      position: absolute;
+      left: 15px;
+      top: 12px;
+      font-size: 20px;
+      cursor: pointer;
+      color: #777;
+    }
+    .cornerpay-modal h3 {
+      margin: 0 0 12px 0;
+      color: #3e4298;
+      font-size: 1.12rem;
+      text-align: center;
+      font-weight: 700;
+    }
+    .cornerpay-payment-list {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+    .cornerpay-payment-list li {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      border-radius: 8px;
+      background: #f7fbfa;
+      margin-bottom: 9px;
+      padding: 10px 10px;
+      font-size: 1.04rem;
+      font-weight: 700;
+      border: 1.2px solid #d2e6e9;
+      cursor: pointer;
+      transition: background 0.13s, border-color 0.15s;
+      direction: rtl;
+    }
+    .cornerpay-payment-list li:hover {
+      background: #edf7ff;
+      border-color: #2b35dd;
+    }
+    .cornerpay-payment-list .bank-icon {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      display: inline-block;
+      background: #eee;
+      padding: 2px;
+      object-fit: contain;
+    }
+    .cornerpay-prompt {
+      background: #f9ffed;
+      border: 1px solid #e8f9b9;
+      color: #444;
+      margin: 18px 0 11px 0;
+      padding: 8px 7px;
+      border-radius: 7px;
+      font-size: 0.98rem;
+      text-align: right;
+    }
+    .cornerpay-actions {
+      margin-top: 18px;
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+      direction: rtl;
+    }
+    .cornerpay-share-btn {
+      background: #25d366;
+      color: #fff;
+      border: none;
+      font-weight: 700;
+      border-radius: 9px;
+      font-size: 1.03rem;
+      padding: 8px 18px;
+      cursor: pointer;
+      transition:background .17s;
+      box-shadow:0 2px 10px #25d36632;
+    }
+    .cornerpay-share-btn:hover {
+      background: #128c7e;
+    }
+    .cornerpay-cancel-btn {
+      background: #eaedfa;
+      color: #444;
+      border: none;
+      border-radius: 9px;
+      font-size: .97rem;
+      padding: 7px 16px;
+      cursor: pointer;
+    }
+    /* Mobile styles for floating buttons and modal */
+    @media (max-width: 600px) {
+      .whatsapp-fixed, .cornerpay-btn {
+        right: 8px;
+        font-size: 23px;
+        width: 71px;
+        height: 50px;
+        border-radius: 22px 60px 60px 22px;
+        padding-right: 8px;
+        gap: 3px;
+      }
+      .whatsapp-fixed { bottom: 14px; }
+      .cornerpay-btn { bottom: 66px; }
+      .whatsapp-fixed .whatsapp-icon, .cornerpay-btn .cornerpay-icon { width: 28px; height: 28px; }
+      .whatsapp-fixed-label, .cornerpay-label {
+        font-size: 1rem;
+        margin-left: 5px;
+      }
+      .marquee-cards-container {
+        height: 128px !important;
+        padding-top: 7px;
+        padding-bottom: 7px;
+      }
+      .marquee-card {
+        flex: 0 0 90px !important;
+        width: 90px !important;
+        height: 90px !important;
+        border-radius: 13px;
+      }
+      .marquee-card-img {
+        width: 100%;
+        height: 71px !important;
+      }
+      .marquee-card-name {
+        font-size: 0.75rem !important;
+        letter-spacing:0.01em;
+        padding: 1px 0 2px 0;
+      }
+      .marquee-cards-track { gap:8px;}
+    }
+    /* ... rest of your existing styles ... */
+    .popup{
+      display:none;
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,0.6);
+      align-items:center;
+      justify-content:center;
+      z-index:999
+    }
+    .popup .inner{
+      background:#fff;
+      padding:14px 10px 15px 10px;
+      border-radius:12px;
+      width:98%;
+      max-width:380px;
+      text-align:right;
+      position:relative
+    }
+    /* --- UPLOAD MODAL SPECIFIC CENTERING --- */
+    #uploadBox {
+      display: none; /* hidden by default; toggleUpload() will set 'flex' */
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      z-index: 1200;
+      display: flex;              /* keep as flex layout when visible */
+      align-items: center;
+      justify-content: center;
+      flex-direction: row;
+    }
+    #uploadBox .inner {
+      margin: 0 auto;
+      background: #fff;
+      border-radius: 12px;
+      max-width: 380px;
+      width: 96vw;
+      padding: 17px 13px 13px 13px;
+      text-align: right;
+      font-family: inherit;
+      direction: rtl;
+      box-shadow: 0 8px 38px #03947329;
+    }
+    /* For cross-browser consistency: in case of popup .popup (uploadBox as subclass), ensure centering */
+    #uploadBox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      z-index: 1200;
+      align-items: center !important;
+      justify-content: center !important;
+      flex-direction: row;
+      /* Use flex setup for true centering */
+      display: flex;
+    }
+    @media (max-width:600px){
+      .bakra-logo { height:36px; max-width:86px;}
+      .logo-container { margin:9px 0 5px 0;}
+      .popup .inner{padding:7px 2px 7px 2px;max-width:98vw;}
+      .marquee-cards-container { height: 128px !important; padding:7px 0; }
+      .marquee-card { flex:0 0 90px !important; width: 90px !important; height:90px !important; border-radius: 13px; }
+      .marquee-card-img { border-radius:7px; height:71px !important;}
+      .marquee-cards-track { gap:8px !important;}
+      .marquee-card-name { font-size: 0.75rem !important; letter-spacing:0.01em;}
+      #uploadBox .inner{padding:9px 4px 9px 4px;max-width:98vw;}
+      #uploadBox{max-width:98vw !important;}
+    }
+    .closeX {position:absolute;left:12px;top:10px;cursor:pointer;font-size:20px}
+    .popup img{width:100%;height:165px;object-fit:cover;border-radius:8px;margin-bottom:8px}
+    form input, form textarea, form select{width:100%;padding:7px 8px;margin:6px 0;border-radius:7px;border:1px solid #ddd;box-sizing:border-box;font-size:1rem}
+    .muted{font-size:0.88rem;color:#666}
+    .order-toast{background:#e2f4ff;color:#005295;padding:9px 7px;border-radius:8px;margin:10px 0 0 0;display:none;text-align:center;font-weight:700;font-size:0.98rem;}
+    .checkout-btn{width:100%;margin-top:8px;padding:8px 0;border-radius:8px;border:0;background:linear-gradient(90deg,#69df8b,#ffe157);font-weight:800;cursor:pointer;color:#222;font-size:1.02rem;}
+    .small{font-size:0.89rem;color:#444}
+    .custom-marquee {
+      background: var(--marquee-gradient);
+      color: #0a7445;
+      font-size: 1.15rem;
+      font-weight: bold;
+      padding: 15px 0;
+      border-bottom: 4px solid #ffe157;
+      width: 100%;
+      direction: ltr;
+      unicode-bidi: embed;
+      position: relative;
+      box-shadow: 0 7px 24px #23eec430, 0 2px 8px #d4ffc8cc;
+      letter-spacing: 0.70px;
+    }
+    .custom-marquee span.marquee-icon {
+      font-size: 1.26em;
+      vertical-align: middle;
+      margin: 0 6px 0 8px;
+      filter: drop-shadow(0 0 4px #fffdbc40);
+      animation: marquee-bounce 1.8s infinite;
+      display: inline-block;
+    }
+    .custom-marquee .glow {
+      color: #2bee98;
+      text-shadow: 0 0 6px #2bee98cc, 0 0 20px #c3ffe6a6;
+      margin:0 4px;
+      font-size: 1.02em;
+      font-weight: 900;
+    }
+    @keyframes marquee-bounce {
+      0%   { transform: translateY(0);}
+      60%  { transform: translateY(-3px);}
+      75%  { transform: translateY(0);}
+      100% { transform: translateY(0);}
+    }
+    .logo-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 16px 0 8px 0;
+    }
+    .bakra-logo {
+      height: 70px;
+      max-width: 150px;
+      object-fit: cover;
+      user-select: none;
+      pointer-events: none;
+      filter: drop-shadow(0px 1px 5px rgba(0,0,0,0.04));
+      border-radius: 50%; /* Make logo round (gol) */
+      background: #fff;
+      border: 3px solid #16d2a7;
+      box-shadow: 0 2px 12px #beffe011;
+      /* Optional: Center/adjust more if needed */
+    }
+
+    /* ---- Enhanced Marquee Cards Styles ---- */
+    .marquee-cards-container {
+      width: 100vw;
+      max-width: 100%;
+      overflow: hidden;
+      background: linear-gradient(87deg,#fdfcf7 43%,#e2ffd6 97%);
+      padding: 20px 0 21px 0;
+      border-bottom: 2.5px solid #f5ffcd;
+      margin-bottom: 0;
+      height: 192px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      position: relative;
+      box-shadow: 0 19px 48px #2bee980a;
+      z-index:2;
+      scroll-behavior: smooth;
+      /* Subtle overlay shine */
+    }
+    .marquee-cards-container::before {
+      content:'';
+      position:absolute;left:0;top:0;bottom:0;width:60px;
+      background:linear-gradient(to right,#fffde9ee 82%,transparent 100%);
+      z-index:4;pointer-events:none;
+    }
+    .marquee-cards-container::after {
+      content:'';
+      position:absolute;right:0;top:0;bottom:0;width:60px;
+      background:linear-gradient(to left,#fffde9fa 82%,transparent 100%);
+      z-index:4;pointer-events:none;
+    }
+    .marquee-cards-track {
+      display: flex;
+      align-items: flex-end;
+      gap: 36px;
+      animation: marquee-cards-move 13s linear infinite;
+      will-change: transform;
+      padding-bottom: 2px;
+      min-width: 132%;
+      position: relative;
+      z-index: 3;
+      filter: drop-shadow(0 2.5px 22px #d2ffe948);
+    }
+    .marquee-card {
+      flex: 0 0 162px;
+      width: 162px;
+      height: 158px;
+      box-shadow: 0 7px 32px #f3ffbb26, 0 2.5px 11px #00eab688, 0 0px 15px #ffe15723;
+      border-radius: 23px;
+      background: linear-gradient(115deg,#f8fff6 59%, #f8fff5 100%);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      border: 2.5px solid #ffe157ad;
+      padding: 0 2px 0 2px;
+      margin-bottom: 7px;
+      cursor: pointer;
+      transition: transform .17s cubic-bezier(.43,1.41,.66,1.03),box-shadow .18s,border-color .15s,filter 0.14s;
+      position: relative;
+      filter: drop-shadow(0 0 8px #ffe15711);
+      outline: none;
+    }
+    .marquee-card::after {
+      content: "";
+      display: block;
+      position: absolute;
+      top:7px;left:7px;right:7px;height:7px;
+      border-radius:6px 6px 12px 12px;
+      background: linear-gradient(90deg,rgba(252,255,245,0.7),rgba(255,255,153,0.18));
+      opacity:0.42;
+      z-index:2;
+      pointer-events: none;
+      transition:opacity 0.17s;
+    }
+    .marquee-card:focus-visible,
+    .marquee-card:hover {
+      transform: scale(1.12) rotate(-1.5deg);
+      box-shadow: 0 18px 41px #8effd766, 0 6px 26px #19debc47, 0 3px 20px #e5fab595, 0 0 2px #ffe41f38;
+      border-color: var(--accent);
+      z-index:7;
+      outline:2.5px solid #ffe157b7;
+      filter:brightness(1.07) drop-shadow(0 0 10px #ffe1572c);
+    }
+    .marquee-card-img {
+      width: 99.7%;
+      height: 105px;
+      object-fit: cover;
+      border-radius: 18px 18px 10px 10px;
+      display: block;
+      background: #fdfff8;
+      border: 2.8px solid #ffe05795;
+      box-shadow: 0 1.1px 9px #d2fab02a;
+      margin-top:1.7px;
+      margin-bottom:0;
+      position: relative;
+      z-index: 2;
+      transition: box-shadow .21s,border-color .20s,transform .12s;
+    }
+    .marquee-card:focus-visible .marquee-card-img,
+    .marquee-card:hover .marquee-card-img {
+      box-shadow: 0 8.5px 26px #ffefa0be, 0 1.7px 10px #a3ffc5a9;
+      border-color: #ffe157;
+      filter:brightness(1.07) drop-shadow(0 0 3px #ffe15748);
+      animation: card-img-bounce 0.8s;
+      transform:scale(1.04) rotate(-1.5deg);
+    }
+    .marquee-card a { display:block;width:100%;height:100%;}
+    .marquee-card-name {
+      font-size: 1.08rem;
+      color: #00a964;
+      font-weight: bold;
+      margin-top: 2.5px;
+      text-align: center;
+      background: rgba(255,255,255,0.95);
+      width: 97.5%;
+      border-radius: 0 0 14px 14px;
+      margin-bottom: 0;
+      padding: 3.2px 0 4px 0;
+      line-height: 1.52;
+      letter-spacing: 0.022em;
+      direction: rtl;
+      box-shadow: 0 2px 10px #f3ffd3ba, 0 1px 4px #e2ffce58;
+      text-shadow: 0 0 3.6px #c3ffd6ad,0 1px 2px #fffef899;
+      border-bottom: 1.5px solid #ffe05748;
+      font-family: inherit;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      font-variation-settings: "wght" 800, "slnt" 0;
+      /* Gradient text for even better effect */
+      background-clip: padding-box;
+      transition: color 0.17s, text-shadow 0.24s;
+    }
+    .marquee-card:focus-visible .marquee-card-name,
+    .marquee-card:hover .marquee-card-name {
+      color: #fbd22a;
+      text-shadow:0 0 9px #ffe157b9, 0 0 24px #ffe6747b;
+      background:rgba(255,255,221,0.97);
+      border-bottom: 2.3px solid #ffe169b7;
+    }
+    @keyframes marquee-cards-move {
+      0% {
+        transform: translateX(0%);
+      }
+      100% {
+        transform: translateX(-53%);
+      }
+    }
+    @keyframes card-img-bounce {
+      0%   { transform: scale(1) ; }
+      50%  { transform: scale(1.06) rotate(-2deg);}
+      100% { transform: scale(1.04) rotate(-1.5deg);}
+    }
+    @media (max-width:950px){
+      .marquee-cards-container { height: 142px !important;}
+      .marquee-card { width: 103px !important; height: 101px !important; min-width:80px; border-radius: 14px;}
+      .marquee-card-img { height:73px !important; border-radius:13px 13px 7px 7px;}
+      .marquee-card-name { font-size: 0.82rem !important;}
+    }
+    @media (max-width:600px){
+      .marquee-cards-container { height: 128px !important; padding:7px 0; }
+      .marquee-card { flex:0 0 90px !important; width: 90px !important; height:90px !important; border-radius: 13px; }
+      .marquee-card-img { border-radius:7px 7px 6px 6px; height: 71px !important;}
+      .marquee-cards-track { gap:8px !important;}
+      .marquee-card-name { font-size: 0.75rem !important;}
+    }
+    /* MODERN FOOTER STYLES (unchanged) */
+    footer.modern-footer {
+      background: linear-gradient(96deg, var(--footer-dark) 0%, var(--footer-accent) 100%);
+      color: var(--footer-text);
+      padding: 0;
+      margin-top: 66px;
+      font-family: inherit;
+      letter-spacing: 0.02em;
+      box-shadow: 0 -1.5px 16px rgba(0,0,0,0.05);
+      position: relative;
+    }
+    .footer-wave {
+      display: block;
+      position: absolute;
+      top: -40px;
+      right: 0;
+      left: 0;
+      width: 100%;
+      pointer-events: none;
+      z-index: 1;
+      height: 44px;
+    }
+    .footer-main-modern {
+      position: relative;
+      z-index: 3;
+      max-width: 1150px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 42px;
+      padding: 52px 32px 13px 32px;
+    }
+    .footer-logo-modern {
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:18px;
+      min-width:170px;
+      margin-top:0;
+    }
+    .footer-logo-modern img {
+      width: 82px;
+      height: 82px;
+      border-radius: 24px 24px 12px 12px;
+      object-fit: cover;
+      background: #fff;
+      border: 3px solid #16d2a7;
+      margin-bottom: -8px;
+      box-shadow: 0 8px 28px 0 #01cb9548;
+      user-select: none;
+      pointer-events: none;
+    }
+    .footer-logo-modern a { display: inline-block; }
+    .footer-tagline-modern {
+      font-size: 1.19rem;
+      color: #ffe157;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 0;
+      margin-top: 0px;
+      letter-spacing: .01em;
+      line-height:1.42;
+      font-family: inherit;
+      text-shadow: 0 2px 12px #004f3860;
+    }
+    .footer-desc-modern {
+      color: #cdfce1;
+      font-size: 1.02rem;
+      text-align: center;
+      line-height:1.6;
+      margin-bottom: 0;
+      font-family: inherit;
+      font-weight: 400;
+      text-shadow: 0 1px 6px #06583b18;
+      margin-top:0;
+    }
+    .footer-actions-modern {
+      flex:1;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 32px;
+      min-width: 260px;
+      padding-top: 16px;
+    }
+    .footer-links-row-modern {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      justify-content:flex-end;
+    }
+    .footer-btn-modern {
+      background: var(--footer-accent);
+      color: #fff;
+      border-radius: 10px;
+      border: none;
+      padding: 13px 25px;
+      font-size: 1.05rem;
+      cursor: pointer;
+      transition: background 0.13s, box-shadow 0.13s;
+      font-family: inherit;
+      letter-spacing:.02em;
+      margin-top:5px;
+      font-weight: 600;
+      box-shadow:0 3px 18px #16e2a519;
+    }
+    .footer-btn-modern:hover {
+      background: #49ffc7;
+      color: #055;
+      box-shadow:0 4px 20px #9fffe07c;
+    }
+    .footer-link-modern {
+      background: transparent;
+      color: var(--footer-link);
+      border: none;
+      border-radius: 7px;
+      padding: 7px 12px;
+      font-size: 1.04rem;
+      letter-spacing:.03em;
+      cursor:pointer;
+      text-decoration:none;
+      font-family:inherit;
+      transition: background .13s, color .13s;
+      font-weight:500;
+    }
+    .footer-link-modern:hover {
+      background: #23745a;
+      color: #ffe157;
+    }
+    .footer-subscribe-modern {
+      display:flex;
+      flex-direction:column;
+      align-items: flex-end;
+      gap: 8px;
+      width: 100%;
+      margin-top: 10px;
+      max-width:380px;
+    }
+    .footer-subscribe-title-modern {
+      font-size:1.09rem;font-weight:700;color: #fffdf6; margin-bottom:2px;
+      text-shadow:0 0 11px #09f4b2aa;
+    }
+    .footer-subscribe-form-modern {
+      display: flex;
+      gap: 7px;
+      align-items: stretch;
+      width: 100%;
+    }
+    .footer-input-modern {
+      flex: 1 1 210px;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1.4px solid #1bbb94;
+      font-size: 1.09rem;
+      font-family: inherit;
+      background: #fafdff;
+      min-width: 110px;
+      direction: ltr;
+    }
+    .footer-subscribe-btn-modern {
+      background: var(--accent);
+      color: #055925;
+      border-radius: 8px;
+      border: 0;
+      font-size: 1.08rem;
+      cursor: pointer;
+      transition: background 0.17s;
+      font-family: inherit;
+      font-weight: 800;
+      padding:12px 24px;
+      letter-spacing: 0.7px;
+      box-shadow: 0 1px 8px #33ecac2a;
+    }
+    .footer-subscribe-btn-modern:hover {
+      background: #fff379;
+      color: #02784b;
+    }
+    .footer-subscribe-msg-modern {
+      font-size: 0.99rem;
+      padding-top: 7px;
+      color: #2bee98;
+      text-align: right;
+      font-family: inherit;
+      font-weight: 700;
+      display: none;
+      text-shadow:0 0 6px #00f30f1c;
+    }
+    .footer-bottom-modern {
+      background: #03241a;
+      margin-top:0;
+      padding: 19px 0 10px 0;
+      color: #afe9d2;
+      font-size: 1.05rem;
+      text-align: center;
+      line-height: 2;
+      letter-spacing: 0.04em;
+      border-top: 1px solid #14c09e56;
+      z-index: 2;
+      box-shadow: 0 -1px 14px #013f2837;
+      position:relative;
+    }
+    @media (max-width:900px){
+      .footer-main-modern{flex-direction:column;align-items:center;gap:32px;padding:32px 3vw 3px 3vw;}
+      .footer-actions-modern{align-items:center;min-width:unset;}
+      .footer-links-row-modern{justify-content:center;}
+      .footer-subscribe-modern{align-items:center;}
+      .footer-desc-modern{text-align:center;}
+    }
+    @media (max-width:550px){
+      .footer-main-modern{padding:12px 2vw 3px 2vw;}
+      .footer-logo-modern img{width:49px;height:49px;}
+      .footer-tagline-modern{font-size:0.97rem;}
+      .footer-desc-modern{font-size:.9rem;}
+      .footer-btn-modern{font-size:.92rem;padding:10px 12px;}
+      .footer-subscribe-form-modern{flex-direction:column;gap:6px;}
+      .footer-input-modern{font-size:.96rem;width:100%;}
+      .footer-subscribe-btn-modern{padding:9px 6vw;font-size:.95rem;}
+    }
+
+    /* --- Edit Modal styles --- */
+    #editBox {
+      display: none;
+      position: fixed;
+      z-index: 2000;
+      inset: 0;
+      background: rgba(0,0,0,0.48);
+      align-items: center;
+      justify-content: center;
+    }
+    #editBox .inner {
+      background: #fff;
+      border-radius: 12px;
+      max-width: 380px;
+      width:96vw;
+      padding: 17px 13px 13px 13px;
+      text-align: right;
+      position: relative;
+      font-family: inherit;
+      direction: rtl;
+      box-shadow: 0 8px 38px #03947329;
+    }
+    #editBox .closeX {
+      position: absolute;
+      left: 12px;
+      top: 10px;
+      font-size: 20px;
+      cursor: pointer;
+      color: #888;
+    }
+    #editBox label { font-size: 0.99rem; color: #377; font-weight: 600; }
+    #editBox input, #editBox select {
+      margin: 6px 0 10px 0;
+      width: 100%;
+      padding: 7px 9px;
+      border-radius: 8px;
+      border: 1.3px solid #b3ded7;
+      font-family: inherit;
+      font-size: 1rem;
+      box-sizing: border-box;
+    }
+    #editBox .btn {
+      width: 100%;
+      padding: 9px 0;
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 5px;
+      font-weight: 700;
+      font-size: 1.04rem;
+    }
+    #editBox .btn:hover {
+      background: #13cf97;
+    }
+    #editBox .muted {
+      font-size: 0.93rem;
+      color: #679b90;
+      margin: 6px 0 0 0;
+    }
+    @media (max-width:600px){
+      #editBox .inner{padding:9px 4px 9px 4px;}
+      #editBox{max-width:98vw;}
+    }
+  </style>
+</head>
+<body>
+<marquee class="custom-marquee" direction="left" scrollamount="5" behavior="scroll">
+  <span class="marquee-icon">🎉</span>
+  <span> <span class="glow">500,000</span> روپے والے جانور پر </span>
+  <span class="glow">فری ڈیلیوری</span>
+  <span class="marquee-icon" style="color:#ffe157;">🚚</span>
+  <span>! ابھی بکنگ کروائیں </span>
+  <span class="marquee-icon" style="color:#ff3d3d;">❤️</span>
+</marquee>
+<div class="logo-container">
+  <img class="bakra-logo" src="https://static.vecteezy.com/system/resources/previews/049/249/951/non_2x/a-powerful-and-striking-logo-featuring-a-goat-s-head-with-large-horns-perfect-for-branding-businesses-and-products-related-to-strength-resilience-and-nature-free-vector.jpg" alt="Bakrapari Logo">
+</div>
+<!-- Improved Marquee Cards: Even more Aesthetic and Attractive -->
+<div class="marquee-cards-container" dir="ltr">
+  <div class="marquee-cards-track">
+    <div class="marquee-card" tabindex="0" title="بکرا Desi">
+      <img class="marquee-card-img" src="https://upload.wikimedia.org/wikipedia/commons/b/b2/Hausziege_04.jpg" alt="Goat Desi">
+      <div class="marquee-card-name">بکرا <span style="color:#13cf97">Desi</span></div>
+    </div>
+    <div class="marquee-card" tabindex="0" title="بکرا Beetal">
+      <img class="marquee-card-img" src="https://ichef.bbci.co.uk/ace/standard/3840/cpsprodpb/41fb/live/e645c5f0-3ec0-11ef-b8a1-27a1f0efda24.jpg" alt="Goat Beetal">
+      <div class="marquee-card-name">بکرا <span style="color:#c80">Beetal</span></div>
+    </div>
+    <div class="marquee-card" tabindex="0" title="بکرا Kamori">
+      <img class="marquee-card-img" src="https://media.4-paws.org/8/0/9/4/809466b924fe20b79ccd45da646ac31af2f945f6/VIER%20PFOTEN_2013-07-19_024-3851x2665.jpg" alt="Goat Kamori">
+      <div class="marquee-card-name">بکرا <span style="color:#6b3">Kamori</span></div>
+    </div>
+    <div class="marquee-card" tabindex="0" title="بکرا بوئر">
+      <img class="marquee-card-img" src="https://animalkingdom.org/wp-content/uploads/2023/09/goats-scaled.jpg" alt="Goat Boer">
+      <div class="marquee-card-name">بکرا <span style="color:#b96">بوئر</span></div>
+    </div>
+    <div class="marquee-card" tabindex="0" title="چھوٹا بکرا Desi">
+      <img class="marquee-card-img" src="https://site-547756.mozfiles.com/files/547756/medium/goat-lamb-little-grass-144240.jpeg?1502811025" alt="Young Desi Goat">
+      <div class="marquee-card-name">چھوٹا بکرا <span style="color:#5a7">Desi</span></div>
+    </div>
+    <div class="marquee-card" tabindex="0" title="نیلی بیل گائے (Demo)">
+      <a href="https://www.google.com/imgres?q=bell%20cow&imgurl=https%3A%2F%2Fpreview.redd.it%2Fblue-bell-flavored-cow-commercial-search-v0-it9cc6o9b25d1.jpeg%3Fauto%3Dwebp%26s%3D8329307ae8e8e5aa3aa3f6a398404311ed9987b2&imgrefurl=https%3A%2F%2Fwww.reddit.com%2Fr%2FCommercials%2Fcomments%2F1da070l%2Fblue_bell_flavored_cow_commercial_search%2F&docid=0FdB8lX1Ol7_DM&tbnid=Ye7apdpUBzRnKM&vet=12ahUKEwjbpfrWmOSQAxVn3AIHHV_yEwo4ChAzegQIGRAA"
+         target="_blank" rel="noopener" title="Blue Bell Flavored Cow (Google / Reddit)">
+        <img class="marquee-card-img"
+          src="https://preview.redd.it/blue-bell-flavored-cow-commercial-search-v0-it9cc6o9b25d1.jpeg?auto=webp&s=8329307ae8e8e5aa3aa3f6a398404311ed9987b2"
+          alt="Blue Bell Flavored Cow Image" />
+      </a>
+      <div class="marquee-card-name">نیلی بیل <span style="color:#27a6db;text-shadow:0 0 7px #b7dcfe;">گائے</span> (Demo)</div>
+    </div>
+    <div class="marquee-card" tabindex="0" title="سفید بکرا">
+      <img class="marquee-card-img" src="https://www.kalmbachfeeds.com/cdn/shop/articles/Kalmbach-Article-Post-Web-Header-10.12.21-copy.jpg?v=1706872885" alt="White Goat">
+      <div class="marquee-card-name">بکرا <span style="color:#dedede; text-shadow:0 0 5px #fff;">(سفید)</span></div>
+    </div>
+    <div class="marquee-card" tabindex="0" title="Brwon Goat">
+      <img class="marquee-card-img" src="https://extension.psu.edu/media/catalog/product/9/8/986db282bdb9f2c2a1efb62e4c0ea803_1.jpeg?quality=80&bg-color=255,255,255&fit=bounds&height=&width=&canvas=:" alt="Brown Goat">
+      <div class="marquee-card-name">بکرا <span style="color:#9d6646;">Brown</span></div>
+    </div>
+    <!-- Animate a "star" or badge card in marquee! -->
+    <div class="marquee-card" tabindex="0" title="VIP Goat: ستار بکرا (خصوصی)">
+      <img class="marquee-card-img" src="https://images.unsplash.com/photo-1517849845537-4d257902454a?auto=format&fit=facearea&w=640&h=360" style="box-shadow:0 0 17px #ffe1579d;" alt="VIP Goat">
+      <div class="marquee-card-name" style="color:#fab300;font-size:1.12rem;">
+        <span style="font-size:1.1em;vertical-align:middle;margin-left:3px;">⭐</span>
+        ستار بکرا <span style="font-size:0.92em;">(خصوصی)</span>
+      </div>
+    </div>
+    <!-- second set for infinite scroll -->
+    <div class="marquee-card" tabindex="0" title="بکرا Desi">
+      <img class="marquee-card-img" src="https://upload.wikimedia.org/wikipedia/commons/b/b2/Hausziege_04.jpg" alt="Goat Desi">
+      <div class="marquee-card-name">بکرا <span style="color:#13cf97">Desi</span></div>
+    </div>
+    <div class="marquee-card" tabindex="0" title="بکرا Beetal">
+      <img class="marquee-card-img" src="https://ichef.bbci.co.uk/ace/standard/3840/cpsprodpb/41fb/live/e645c5f0-3ec0-11ef-b8a1-27a1f0efda24.jpg" alt="Goat Beetal">
+      <div class="marquee-card-name">بکرا <span style="color:#c80">Beetal</span></div>
+    </div>
+    <div class="marquee-card" tabindex="0" title="بکرا Kamori">
+      <img class="marquee-card-img" src="https://media.4-paws.org/8/0/9/4/809466b924fe20b79ccd45da646ac31af2f945f6/VIER%20PFOTEN_2013-07-19_024-3851x2665.jpg" alt="Goat Kamori">
+      <div class="marquee-card-name">بکرا <span style="color:#6b3">Kamori</span></div>
+    </div>
+    <div class="marquee-card" tabindex="0" title="بکرا بوئر">
+      <img class="marquee-card-img" src="https://animalkingdom.org/wp-content/uploads/2023/09/goats-scaled.jpg" alt="Goat Boer">
+      <div class="marquee-card-name">بکرا <span style="color:#b96">بوئر</span></div>
+    </div>
+    <div class="marquee-card" tabindex="0" title="چھوٹا بکرا Desi">
+      <img class="marquee-card-img" src="https://site-547756.mozfiles.com/files/547756/medium/goat-lamb-little-grass-144240.jpeg?1502811025" alt="Young Desi Goat">
+      <div class="marquee-card-name">چھوٹا بکرا <span style="color:#5a7">Desi</span></div>
+    </div>
+    <div class="marquee-card" tabindex="0" title="نیلی بیل گائے (Demo)">
+      <a href="https://www.google.com/imgres?q=bell%20cow&imgurl=https%3A%2F%2Fpreview.redd.it%2Fblue-bell-flavored-cow-commercial-search-v0-it9cc6o9b25d1.jpeg%3Fauto%3Dwebp%26s%3D8329307ae8e8e5aa3aa3f6a398404311ed9987b2&imgrefurl=https%3A%2F%2Fwww.reddit.com%2Fr%2FCommercials%2Fcomments%2F1da070l%2Fblue_bell_flavored_cow_commercial_search%2F&docid=0FdB8lX1Ol7_DM&tbnid=Ye7apdpUBzRnKM&vet=12ahUKEwjbpfrWmOSQAxVn3AIHHV_yEwo4ChAzegQIGRAA"
+         target="_blank" rel="noopener" title="Blue Bell Flavored Cow (Google / Reddit)">
+        <img class="marquee-card-img"
+          src="https://preview.redd.it/blue-bell-flavored-cow-commercial-search-v0-it9cc6o9b25d1.jpeg?auto=webp&s=8329307ae8e8e5aa3aa3f6a398404311ed9987b2"
+          alt="Blue Bell Flavored Cow Image" />
+      </a>
+      <div class="marquee-card-name">نیلی بیل <span style="color:#27a6db;text-shadow:0 0 7px #b7dcfe;">گائے</span> (Demo)</div>
+    </div>
+    <div class="marquee-card" tabindex="0" title="سفید بکرا">
+      <img class="marquee-card-img" src="https://www.kalmbachfeeds.com/cdn/shop/articles/Kalmbach-Article-Post-Web-Header-10.12.21-copy.jpg?v=1706872885" alt="White Goat">
+      <div class="marquee-card-name">بکرا <span style="color:#dedede; text-shadow:0 0 5px #fff;">(سفید)</span></div>
+    </div>
+    <div class="marquee-card" tabindex="0" title="Brwon Goat">
+      <img class="marquee-card-img" src="https://extension.psu.edu/media/catalog/product/9/8/986db282bdb9f2c2a1efb62e4c0ea803_1.jpeg?quality=80&bg-color=255,255,255&fit=bounds&height=&width=&canvas=:" alt="Brown Goat">
+      <div class="marquee-card-name">بکرا <span style="color:#9d6646;">Brown</span></div>
+    </div>
+    <div class="marquee-card" tabindex="0" title="VIP Goat: ستار بکرا (خصوصی)">
+      <img class="marquee-card-img" src="https://images.unsplash.com/photo-1517849845537-4d257902454a?auto=format&fit=facearea&w=640&h=360" style="box-shadow:0 0 17px #ffe1579d;" alt="VIP Goat">
+      <div class="marquee-card-name" style="color:#fab300;font-size:1.12rem;">
+        <span style="font-size:1.1em;vertical-align:middle;margin-left:3px;">⭐</span>
+        ستار بکرا <span style="font-size:0.92em;">(خصوصی)</span>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Marquee Cards End -->
+
+<!-- WhatsApp Floating Button -->
+<a
+  href="https://wa.me/923003435413"
+  target="_blank"
+  title="واٹس ایپ پر رابطہ کریں"
+  class="whatsapp-fixed"
+  aria-label="واٹس ایپ پر رابطہ کریں"
+>
+  <svg class="whatsapp-icon" viewBox="0 0 32 32" fill="currentColor">
+    <circle cx="16" cy="16" r="16" fill="#25D366"/>
+    <path d="M22.393 18.768c-.341-.171-2.012-.993-2.325-1.108-.312-.115-.54-.171-.769.171s-.883 1.108-1.083 1.338c-.198.228-.366.257-.677.086-.31-.171-1.309-.484-2.496-1.544-.922-.82-1.545-1.834-1.729-2.143-.18-.31-.019-.477.135-.628.142-.14.31-.366.467-.548a2.13 2.13 0 00.314-.527c.104-.228.018-.427-.053-.598-.07-.17-.769-1.847-1.053-2.536-.278-.671-.563-.578-.769-.589h-.655a1.27 1.27 0 00-.92.427c-.284.298-1.08 1.053-1.08 2.562 0 1.511 1.105 2.976 1.26 3.186.155.211 2.175 3.303 5.271 4.503 2.194.868 2.966.939 3.504.793.533-.149 1.688-.693 1.925-1.363.238-.669.238-1.243.166-1.363-.07-.12-.307-.192-.648-.363z" fill="#FFF"/>
+  </svg>
+  <span class="whatsapp-fixed-label">واٹس ایپ</span>
+</a>
+
+<!-- Payment Corner Button -->
+<button type="button" class="cornerpay-btn" onclick="toggleCornerPayModal()" aria-label="آن لائن ادائیگی">
+  <svg class="cornerpay-icon" viewBox="0 0 32 32" fill="currentColor">
+    <circle cx="16" cy="16" r="16" fill="#3e4298"/>
+    <g>
+      <rect x="8" y="12" width="16" height="8" rx="2" fill="#FFF"/>
+      <rect x="10" y="15" width="4" height="2" rx="1" fill="#3e4298"/>
+      <rect x="16" y="15" width="6" height="2" rx="1" fill="#ffe157"/>
+    </g>
+  </svg>
+  <span class="cornerpay-label">ادائیگی</span>
+</button>
+
+<!-- Payment Modal -->
+<div id="cornerpayModal" class="cornerpay-modal" tabindex="-1" aria-modal="true" role="dialog">
+  <div class="inner">
+    <span class="cornerpay-closeX" onclick="toggleCornerPayModal()">×</span>
+    <h3>آن لائن ادائیگی/ٹرانسفر</h3>
+    <div class="cornerpay-prompt">
+      براہ کرم ایڈوانس (5%) جمع/ٹرانسفر کریں:<br>
+      (بینک، JazzCash، یا Easypaisa)
+    </div>
+    <ul class="cornerpay-payment-list">
+      <li onclick="window.open('https://www.easypaisa.com.pk/', '_blank')">
+        <img class="bank-icon" src="https://seeklogo.com/images/E/easypaisa-logo-003CE5B889-seeklogo.com.png" alt="Easypaisa" />
+        <span>Easypaisa</span>
+        <span style="font-size:0.98rem;direction:ltr">0345-5433999</span>
+      </li>
+      <li onclick="window.open('https://www.jazzcash.com.pk/', '_blank')">
+        <img class="bank-icon" src="https://seeklogo.com/images/J/jazzcash-logo-DAB3751D39-seeklogo.com.png" alt="JazzCash" />
+        <span>JazzCash</span>
+        <span style="font-size:0.98rem;direction:ltr">0300-3435413</span>
+      </li>
+      <li onclick="window.open('https://www.hbl.com/personal/ways-to-bank/mobile-banking', '_blank')">
+        <img class="bank-icon" src="https://i.ibb.co/Px8b1P5/hbl-logo.png" alt="HBL" />
+        <span>HBL اکاؤنٹ</span>
+        <span style="font-size:0.93rem;direction:ltr">08997900017003</span>
+      </li>
+      <li onclick="window.open('https://www.meezanbank.com/digital-banking/mobile-banking/', '_blank')">
+        <img class="bank-icon" src="https://upload.wikimedia.org/wikipedia/commons/9/98/Meezan_Bank_logo.png" alt="Meezan" />
+        <span>Meezan بینک</span>
+        <span style="font-size:0.93rem;direction:ltr">01550041018597</span>
+      </li>
+    </ul>
+    <div class="cornerpay-actions">
+      <button class="cornerpay-share-btn" onclick="copyPayInfo()">اکاؤنٹ/نمبر کاپی کریں</button>
+      <button class="cornerpay-cancel-btn" onclick="toggleCornerPayModal()">واپس</button>
+    </div>
+    <div id="cornerpayCopyMsg" style="display:none;padding-top:8px;font-weight:bold;color:#13a949;text-align:center"></div>
+    <div class="muted" style="padding-top:8px;font-size:0.88rem">
+      مکمل ادائیگی یا سوالات کیلئے واٹس ایپ پر رابطہ کریں۔
+    </div>
+  </div>
+</div>
+
+<main>
+  <header>
+    <h1 style="font-size:1.1rem;">Bakrapari.pk — آن لائن جانور مارکیٹ</h1>
+    <div class="controls" style="flex-wrap:wrap;">
+      <input id="searchInput" type="search" placeholder="تلاش (قیمت/شہر/نسل/ٹوکن)" oninput="renderGoats()" style="flex:1;min-width:120px;">
+      <select id="breedFilter" onchange="renderGoats()">
+        <option value="all">تمام نسلیں</option>
+        <option value="desi">Desi</option>
+        <option value="beetal">Beetal</option>
+        <option value="kamori">Kamori</option>
+      </select>
+      <button class="btn" onclick="showRegister()" style="padding:7px 10px;">رجسٹر</button>
+      <button class="btn" onclick="toggleUpload()" style="padding:7px 10px;">اپلوڈ</button>
+    </div>
+  </header>
+
+  <!-- Product Detail Popup: condensed form with city & address -->
+  <div id="productDetailPopup" class="popup" role="dialog" aria-hidden="true">
+    <div class="inner">
+      <span class="closeX" onclick="closeDetail()">×</span>
+      <img id="popupImg" src="" alt="animal">
+      <div id="popupVideoBox" style="margin:6px 0 0 0; display:none;">
+        <video id="popupVideo" style="max-width:100%;border-radius:8px" controls></video>
+      </div>
+      <h2 id="popupName" style="font-size:1.05rem;margin-bottom:4px;"></h2>
+      <div class="muted" id="popupToken" style="margin-bottom:1px;font-size:0.97rem;"></div>
+      <div style="margin-bottom:3px" id="popupAttrs" class="small"></div>
+      <form id="checkoutForm" onsubmit="submitOrder(event)" style="margin-top:8px;">
+        <input id="custName" type="text" placeholder="نام" required autocomplete="name">
+        <input id="custPhone" type="tel" placeholder="فون نمبر" required pattern="[0-9+ ]+" autocomplete="tel">
+        <div style="display:flex;gap:8px;margin:0">
+          <input id="custCity" type="text" placeholder="شہر" required style="flex:1;min-width:0;">
+          <input id="custAddress" type="text" placeholder="پتہ" required style="flex:1;min-width:0;">
+        </div>
+        <button class="btn" type="submit" style="width:100%;margin-top:7px;padding:8px 0;">واٹس ایپ آرڈر</button>
+      </form>
+      <button class="checkout-btn" onclick="openCheckout()">چیک آؤٹ</button>
+      <div class="muted" style="margin-top:6px" id="advanceNote">ایڈوانس (5%) آن لائن ادا کریں — باقی ڈیلیوری پر۔</div>
+      <div id="orderToast" class="order-toast">آپ کا آرڈر کامیابی سے تصدیق ہوگیا!</div>
+      <button type="button" onclick="closeDetail()" style="width:100%;background:#f1f1f1;color:#444;border-radius:8px;border:0;margin-top:7px;padding:7px 0;">بند کریں</button>
+    </div>
+  </div>
+
+  <!-- Checkout Modal -->
+  <div id="checkoutModal" class="popup" role="dialog" aria-hidden="true">
+    <div class="inner">
+      <span class="closeX" onclick="closeCheckout()">×</span>
+      <h2 style="margin-bottom:7px;font-size:1.06rem;color:var(--primary)">چیک آؤٹ</h2>
+      <div id="checkoutDetails" style="margin-bottom:12px;font-size:0.97rem;"></div>
+      <form id="checkoutConfirmForm" onsubmit="confirmCheckout(event)">
+        <input type="text" id="chkName" required placeholder="نام">
+        <input type="tel" id="chkPhone" required placeholder="فون نمبر" pattern="[0-9+ ]+">
+        <input type="text" id="chkCity" required placeholder="شہر">
+        <button class="btn" type="submit" style="width:100%;margin-top:7px;">تصدیق</button>
+      </form>
+      <button type="button" onclick="closeCheckout()" style="width:100%;background:#eee;color:#444;border-radius:8px;border:0;margin-top:7px;padding:7px 0;">منسوخ</button>
+      <div id="checkoutToast" class="order-toast">آپ کا آرڈر کامیابی سے کنفرم ہوگیا!</div>
+    </div>
+  </div>
+
+  <!-- Registration (mini inline, only name/city/email) -->
+  <div id="regBox" class="popup" role="dialog" style="display:none;">
+    <div class="inner">
+      <span class="closeX" onclick="hideRegister()">×</span>
+      <h3 style="margin:0 0 5px 0;font-size:1.06rem;">رجسٹریشن</h3>
+      <form id="regForm" onsubmit="submitRegister(event)">
+        <input name="regName" required placeholder="نام">
+        <input name="city" required placeholder="شہر">
+        <input name="email" type="email" required placeholder="ای میل">
+        <button class="btn" type="submit" style="width:100%;margin-top:7px;">رجسٹر</button>
+      </form>
+      <div class="muted" style="margin-top:6px">(ڈیمو: localStorage استعمال ہو گی)</div>
+      <div id="regToast" class="order-toast" style="margin:10px 0 0 0;">کامیاب رجسٹرڈ!</div>
+    </div>
+  </div>
+
+  <!-- Upload form (mini modal with fewer fields) -->
+  <div id="uploadBox" class="popup" role="dialog" style="display:none;">
+    <div class="inner">
+      <span class="closeX" onclick="toggleUpload()">×</span>
+      <h3 style="margin:0 0 5px 0;font-size:1.06rem;">جانور اپلوڈ</h3>
+      <form id="uploadForm" onsubmit="submitUpload(event)">
+        <input name="animalName" required placeholder="جانور کا نام">
+        <input name="price" type="number" min="1" required placeholder="قیمت (روپے)">
+        <select name="breed" required style="margin-bottom:5px;">
+          <option value="">نسل منتخب کریں</option>
+          <option value="desi">Desi</option>
+          <option value="beetal">Beetal</option>
+          <option value="kamori">Kamori</option>
+          <option value="other">Other</option>
+        </select>
+        <input name="city" required placeholder="شہر">
+        <input name="age" placeholder="عمر (مثلاً 1.5 سال)">
+        <input name="weight" type="number" min="1" step="any" placeholder="وزن (کلو)">
+        <label class="small" style="margin-top:5px;">تصویر (ضروری)</label>
+        <input id="photoInput" name="photo" type="file" accept="image/*" required onchange="previewPhoto(event)">
+        <div class="preview" id="photoPreview" style="margin-bottom:5px;">Preview</div>
+        <label class="small">ویڈیو (اختیاری، 10MB تک)</label>
+        <input id="videoInput" name="video" type="file" accept="video/*" onchange="previewVideo(event)">
+        <div class="video-preview" id="videoPreview" style="margin-bottom:5px;">Video Preview</div>
+        <button class="btn" type="submit" style="width:100%;margin-top:7px;">اپلوڈ کریں</button>
+      </form>
+      <button type="button" onclick="toggleUpload()" style="width:100%;background:#eee;color:#444;border-radius:8px;border:0;margin-top:7px;padding:7px 0;">واپس</button>
+      <div class="muted" style="margin-top:6px">نوٹ: ڈیمو ڈیٹا صرف آپ کے براؤزر میں محفوظ ہوگا</div>
+    </div>
+  </div>
+
+  <!-- Edit form (modal) -->
+  <div id="editBox" class="popup" role="dialog" style="display:none;">
+    <div class="inner">
+      <span class="closeX" onclick="closeEditBox()">×</span>
+      <h3 style="margin:0 0 7px 0;font-size:1.08rem;color:var(--primary)">ایڈیٹ کارڈ</h3>
+      <form id="editForm" onsubmit="submitEdit(event)">
+        <label>جانور کا نام</label>
+        <input name="editName" required>
+        <label>قیمت (روپے)</label>
+        <input name="editPrice" type="number" min="0" required>
+        <label>نسل</label>
+        <select name="editBreed" required>
+          <option value="desi">Desi</option>
+          <option value="beetal">Beetal</option>
+          <option value="kamori">Kamori</option>
+          <option value="other">Other</option>
+        </select>
+        <label>شہر</label>
+        <input name="editCity" required>
+        <label>عمر</label>
+        <input name="editAge">
+        <label>وزن (کلو)</label>
+        <input name="editWeight" type="number" min="1" step="any">
+        <button class="btn" type="submit">محفوظ کریں</button>
+      </form>
+      <div id="editBoxToast" class="muted" style="display:none;margin:12px 0 0 0;"></div>
+    </div>
+  </div>
+
+  <!-- Grid -->
+  <div id="goatGrid" class="grid" aria-live="polite"></div>
+</main>
+
+<!-- START Footer -->
+<footer class="modern-footer">
+  <!-- Decorative Wave SVG Top (optional) for modern look -->
+  <svg class="footer-wave" viewBox="0 0 1440 44" fill="none" preserveAspectRatio="none">
+    <path d="M0,16 C120,44,320,11,500,25 C720,41,1080,7,1440,26 L1440,44 L0,44 Z" fill="#f7fbf7"/>
+  </svg>
+
+  <div class="footer-main-modern">
+    <div class="footer-logo-modern">
+      <a href="https://www.vecteezy.com/vector-art/49249951-a-powerful-and-striking-logo-featuring-a-goat-s-head-with-large-horns-perfect-for-branding-businesses-and-products-related-to-strength-resilience-and-nature" target="_blank" rel="noopener" title="Logo Source">
+        <img src="https://static.vecteezy.com/system/resources/previews/049/249/951/non_2x/a-powerful-and-striking-logo-featuring-a-goat-s-head-with-large-horns-perfect-for-branding-businesses-and-products-related-to-strength-resilience-and-nature-free-vector.jpg" alt="Bakrapari Logo" draggable="false">
+      </a>
+      <div class="footer-tagline-modern">Bakrapari.pk<br>آسان، محفوظ — جدید آن لائن مارکیٹ</div>
+      <div class="footer-desc-modern">
+        پاکستان کی پہلی جدید آن لائن جانور مارکیٹ<br>
+        ایک جگہ — تلاش، خرید، اپلوڈ اور رابطہ سب آسان!
+      </div>
+    </div>
+    <div class="footer-actions-modern">
+      <div class="footer-links-row-modern">
+        <button class="footer-btn-modern" onclick="showRegister()">رجسٹریشن</button>
+        <button class="footer-btn-modern" onclick="toggleUpload()">جانور اپلوڈ</button>
+        <button class="footer-btn-modern" onclick="window.scrollTo({top:0,behavior:'smooth'})">⬆️ اوپر</button>
+        <a class="footer-link-modern" href="https://wa.me/923003435413" target="_blank" rel="noopener">
+          واٹس ایپ پر رابطہ
+        </a>
+      </div>
+      <div class="footer-subscribe-modern">
+        <div class="footer-subscribe-title-modern">
+          نیوز اور خصوصی آفرز — ای میل پر حاصل کریں
+        </div>
+        <form class="footer-subscribe-form-modern" onsubmit="footerSubscribe(event)">
+          <input id="footerEmailInput" class="footer-input-modern" type="email" required placeholder="ای میل لکھیں...">
+          <button class="footer-subscribe-btn-modern" type="submit">سبسکرائب</button>
+        </form>
+        <div id="footerSubscribeMsg" class="footer-subscribe-msg-modern"></div>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom-modern">
+    &copy; 2024 Bakrapari.pk &bull; جملہ حقوق محفوظ &nbsp;|&nbsp; Designed with 💚 by Bakrapari Team
+  </div>
+</footer>
+<!-- END Footer -->
+
+<script>
+function toggleCornerPayModal() {
+  var modal = document.getElementById('cornerpayModal');
+  if (modal.style.display === 'flex') {
+    modal.style.display = 'none';
+    document.body.style.overflow = ''; // scroll restore
+  } else {
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden'; // block scroll on mobile
+    document.getElementById('cornerpayCopyMsg').style.display = 'none';
+  }
+}
+// Copy all pay info to clipboard, show message
+function copyPayInfo() {
+  var text = [
+    "Easypaisa: 0345-5433999",
+    "JazzCash: 0300-3435413",
+    "HBL: 08997900017003",
+    "Meezan: 01550041018597"
+  ].join('\n');
+  if (navigator && navigator.clipboard) {
+    navigator.clipboard.writeText(text).then(function() {
+      document.getElementById('cornerpayCopyMsg').style.display = 'block';
+      document.getElementById('cornerpayCopyMsg').textContent = "اکاؤنٹ/نمبر کاپی ہوگئے!";
+      setTimeout(function(){document.getElementById('cornerpayCopyMsg').style.display='none';}, 1700);
+    });
+  } else {
+    // fallback
+    alert(text);
+  }
+}
+</script>
+<script>
+function footerSubscribe(e) {
+  e.preventDefault();
+  var emailInp = document.getElementById('footerEmailInput');
+  var msgBox = document.getElementById('footerSubscribeMsg');
+  var email = (emailInp.value || '').trim();
+  if(!email.match(/^[^@\s]+@[^@\s]+\.[^@\s]+$/)){
+    msgBox.style.display = 'block';
+    msgBox.textContent = 'درست ای میل درج کریں';
+    msgBox.style.color = '#fff374';
+    return;
+  }
+  var subscribers = [];
+  try { 
+    subscribers = JSON.parse(localStorage.getItem('bp_subscribers') || '[]');
+  }catch(e){}
+  subscribers.unshift({email, subscribedAt: new Date().toISOString()});
+  localStorage.setItem('bp_subscribers', JSON.stringify(subscribers));
+  msgBox.style.display = 'block';
+  msgBox.style.color = '#2bee98';
+  msgBox.textContent = 'سبسکرپشن کامیاب! شکریہ';
+  emailInp.value = '';
+  setTimeout(function(){
+    msgBox.style.display = 'none';
+  }, 2000);
+}
+</script>
+
+<script>
+function uid(prefix='TK'){ return `${prefix}-${Math.floor(1000 + Math.random()*9000)}`; }
+const SAMPLE = [
+  { name:"بکرا", price:55000, age:"1.5 سال", breed:"desi", city:"Karachi", image:"https://upload.wikimedia.org/wikipedia/commons/b/b2/Hausziege_04.jpg", token:"GOAT-1001", uploadedBy:"Admin" },
+  { name:"بکرا", price:62000, age:"2 سال", breed:"beetal", city:"Lahore", image:"https://ichef.bbci.co.uk/ace/standard/3840/cpsprodpb/41fb/live/e645c5f0-3ec0-11ef-b8a1-27a1f0efda24.jpg", token:"GOAT-1002", uploadedBy:"Admin" },
+  { name:"بکرا", price:58000, age:"1.8 سال", breed:"kamori", city:"Hyderabad", image:"https://media.4-paws.org/8/0/9/4/809466b924fe20b79ccd45da646ac31af2f945f6/VIER%20PFOTEN_2013-07-19_024-3851x2665.jpg", token:"GOAT-1003", uploadedBy:"Admin" },
+   { name:"بکرا (بوئر)", price:68000, age:"2 سال", breed:"beetal", city:"Karachi", image:"https://animalkingdom.org/wp-content/uploads/2023/09/goats-scaled.jpg", token:"GOAT-1004", uploadedBy:"Admin" }
+];
+function getGoats(){ try{ return JSON.parse(localStorage.getItem('goats_demo')||'[]'); }catch(e){return [];} }
+function saveGoats(list){ localStorage.setItem('goats_demo', JSON.stringify(list)); }
+function getUsers(){ try{ return JSON.parse(localStorage.getItem('bp_users')||'[]'); }catch(e){return [];} }
+function saveUsers(list){ localStorage.setItem('bp_users', JSON.stringify(list)); }
+
+// safe seeding / merge SAMPLE so deploy domain always has items without overwriting user's uploads
+function initializeGoats(){
+  try {
+    let stored = JSON.parse(localStorage.getItem('goats_demo')||'[]');
+    if(!Array.isArray(stored)) stored = [];
+    if(stored.length === 0){
+      localStorage.setItem('goats_demo', JSON.stringify(SAMPLE.slice()));
+      console.log('DEBUG: seeded goats_demo with SAMPLE items:', SAMPLE.length);
+      return;
+    }
+    const existingTokens = new Set(stored.map(i=>i.token));
+    const toAdd = SAMPLE.filter(s => !existingTokens.has(s.token));
+    if(toAdd.length){
+      stored = stored.concat(toAdd);
+      localStorage.setItem('goats_demo', JSON.stringify(stored));
+      console.log('DEBUG: merged SAMPLE into goats_demo, added:', toAdd.length);
+    } else {
+      console.log('DEBUG: goats_demo present, count:', stored.length);
+    }
+  } catch(err){
+    localStorage.setItem('goats_demo', JSON.stringify(SAMPLE.slice()));
+    console.log('DEBUG: initializeGoats error, reset to SAMPLE', err);
+  }
+}
+initializeGoats();
+
+function renderGoats() {
+  const q = (document.getElementById('searchInput').value || '').trim().toLowerCase();
+  const breed = document.getElementById('breedFilter').value;
+  const all = getGoats() || [];
+  console.log('DEBUG renderGoats - total stored items:', all.length, all);
+  const list = all.filter(g=>{
+    const matchBreed = (breed === 'all') || (g.breed === breed);
+    const hay = `${g.name} ${g.city} ${g.price} ${g.age} ${g.breed} ${g.token}`.toLowerCase();
+    const matchQ = q === '' || hay.indexOf(q) !== -1;
+    return matchBreed && matchQ;
+  });
+  const grid = document.getElementById('goatGrid');
+  grid.innerHTML = '';
+  if(list.length === 0){ grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:30px;color:#666">کوئی جانور دستیاب نہیں</div>'; return; }
+  const placeholder = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="800" height="480"><rect width="100%" height="100%" fill="%23f7f7f7"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23888" font-size="20">تصویر دستیاب نہیں</text></svg>';
+  list.forEach((g, idx)=>{
+    const el = document.createElement('div');
+    el.className = 'card';
+    const weightHtml = g.weight ? `<div><strong>وزن:</strong> ${g.weight} کلو</div>` : '';
+    const imgSrc = (g.image && g.image.length) ? g.image : placeholder;
+    el.innerHTML = `
+      <img src="${imgSrc}" alt="animal" onerror="this.onerror=null;this.src='${placeholder}';">
+      ${g.video ? `<div style="margin-top:4px;text-align:center"><video src="${g.video}" style="max-width:100%;height:70px" controls></video></div>` : ""}
+      <h3 style="font-size:1.01rem">${(g.price||0).toLocaleString()} روپے</h3>
+      <div class="attr" style="font-size:0.92rem">
+        <div><strong>نسل:</strong> ${g.breed}</div>
+        <div><strong>عمر:</strong> ${g.age||'-'}</div>
+        <div><strong>شہر:</strong> ${g.city||'-'}</div>
+        ${weightHtml}
+      </div>
+      <div style="margin-top:5px;font-size:0.85rem;color:#888">ٹوکن: ${g.token||''}</div>
+      <button class="buy-btn" style="margin-top:8px;padding:7px 0;" onclick="openDetail(${idx})">تفصیل / خریدیں</button>
+      <button class="edit-btn" onclick="showEditForm(${idx})">✏️ ایڈیٹ</button>
+    `;
+    grid.appendChild(el);
+  });
+}
+
+
+let currentIndex = null;
+function openDetail(idx){
+  const g = getGoats()[idx];
+  if(!g) return;
+  currentIndex = idx;
+  document.getElementById('popupImg').src = g.image;
+  if (g.video && g.video.length > 0) {
+    document.getElementById('popupVideo').src = g.video;
+    document.getElementById('popupVideoBox').style.display = 'block';
+  } else {
+    document.getElementById('popupVideo').src = "";
+    document.getElementById('popupVideoBox').style.display = "none";
+  }
+  const weightHtml = g.weight ? ` &nbsp;&nbsp; <strong>وزن:</strong> ${g.weight} کلو` : '';
+  document.getElementById('popupName').textContent = `${g.name} — ${g.price.toLocaleString()} روپے`;
+  document.getElementById('popupToken').textContent = 'ٹوکن: ' + g.token;
+  document.getElementById('popupAttrs').innerHTML = `<strong>نسل:</strong> ${g.breed} &nbsp;&nbsp; <strong>شہر:</strong> ${g.city} &nbsp;&nbsp; <strong>عمر:</strong> ${g.age||'-'}` + weightHtml;
+  const advance = Math.round(Number(g.price) * 0.05);
+  document.getElementById('advanceNote').textContent = `ایڈوانس (5%): ${advance.toLocaleString()} — بقیہ ڈیلیوری پر: ${(Number(g.price)-advance).toLocaleString()} روپے`;
+  document.getElementById('productDetailPopup').style.display = 'flex';
+  document.getElementById('productDetailPopup').setAttribute('aria-hidden','false');
+  document.getElementById('orderToast').style.display = 'none';
+}
+
+function showOrderToast(msg) {
+  var orderToast = document.getElementById('orderToast');
+  if(orderToast){
+    orderToast.textContent = msg;
+    orderToast.style.display = 'block';
+    setTimeout(function(){
+      orderToast.style.display = 'none';
+    }, 1700);
+  }
+}
+function openCheckout() {
+  if(currentIndex === null) return;
+  const g = getGoats()[currentIndex];
+  if(!g) return;
+  document.getElementById('checkoutDetails').innerHTML = `
+    <div><strong>نام:</strong> ${g.name}</div>
+    <div><strong>قیمت:</strong> ${g.price.toLocaleString()} روپے</div>
+    <div><strong>نسل:</strong> ${g.breed}</div>
+    <div><strong>شہر:</strong> ${g.city}</div>
+    ${g.weight ? `<div><strong>وزن:</strong> ${g.weight} کلو</div>` : ''}
+    <div><strong>ٹوکن:</strong> ${g.token}</div>
+  `;
+  document.getElementById('checkoutModal').style.display = 'flex';
+  document.getElementById('checkoutModal').setAttribute('aria-hidden','false');
+  document.getElementById('checkoutToast').style.display = 'none';
+}
+function closeCheckout(){
+  document.getElementById('checkoutModal').style.display='none';
+  document.getElementById('checkoutModal').setAttribute('aria-hidden','true');
+  document.getElementById('checkoutConfirmForm').reset();
+  document.getElementById('checkoutToast').style.display='none';
+}
+function confirmCheckout(e) {
+  e.preventDefault();
+  const name = document.getElementById('chkName').value.trim();
+  const phone = document.getElementById('chkPhone').value.trim();
+  const city = document.getElementById('chkCity').value.trim();
+  if(!name || !phone || !city) {
+    document.getElementById('checkoutToast').textContent = 'براہِ کرم مکمل معلومات درج کریں';
+    document.getElementById('checkoutToast').style.display = 'block';
+    return;
+  }
+  document.getElementById('checkoutToast').textContent = 'آپ کا آرڈر کامیابی سے کنفرم ہوگیا!';
+  document.getElementById('checkoutToast').style.display = 'block';
+  setTimeout(()=>{
+    closeCheckout();
+    showOrderToast('آپ کا آرڈر کامیابی سے تصدیق ہوگیا!');
+    closeDetail();
+  }, 1550);
+}
+function closeDetail(){
+  document.getElementById('productDetailPopup').style.display='none';
+  currentIndex=null;
+  document.getElementById('productDetailPopup').setAttribute('aria-hidden','true');
+  try{ document.getElementById('popupVideo').pause(); }catch(e){}
+}
+// WhatsApp order with condensed form
+function submitOrder(e){
+  e.preventDefault();
+  if(currentIndex === null) return;
+  const g = getGoats()[currentIndex];
+  const name = document.getElementById('custName').value.trim();
+  const phone = document.getElementById('custPhone').value.trim();
+  const city = document.getElementById('custCity').value.trim();
+  const address = document.getElementById('custAddress').value.trim();
+  if(!name || !phone || !city || !address){ alert('براہِ کرم تمام فیلڈز پر کریں'); return; }
+  let message = `سلام! نیا آرڈر:\n\nنام: ${name}\nفون: ${phone}\nشہر: ${city}\nپتہ: ${address}\n\nجانور: ${g.name}\nقیمت: ${g.price} روپے\nٹوکن: ${g.token}\nنسل: ${g.breed}`;
+  if (g.weight) {
+    message += `\nوزن: ${g.weight} کلو`;
+  }
+  message += `\n\n(ایڈوانس 5% ادا کریں)`;
+  const whatsappNumber = '923003435413';
+  const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
+  window.open(url, '_blank');
+  closeDetail();
+  showOrderToast('آپ کا آرڈر کامیابی سے تصدیق ہوگیا!');
+}
+
+// Upload Form helpers
+function toggleUpload(){ 
+  const el = document.getElementById('uploadBox'); 
+  el.style.display = (el.style.display === 'block' || el.style.display === 'flex') ? 'none' : 'flex'; 
+  if(el.style.display==='flex') window.scrollTo({top:0,behavior:'smooth'});
+  if (el.style.display === 'flex') {
+    document.getElementById('videoPreview').innerHTML = "Video Preview";
+    if(document.getElementById('videoInput')) document.getElementById('videoInput').value = null;
+    if(document.getElementById('photoInput')) document.getElementById('photoInput').value = null;
+    document.getElementById('photoPreview').textContent = 'Preview';
+    document.getElementById('photoPreview').style.backgroundImage = 'none';
+  }
+}
+function previewPhoto(e){
+  const file = e.target.files[0]; const preview = document.getElementById('photoPreview');
+  if(!file){ preview.textContent='Preview'; preview.style.backgroundImage='none'; return; }
+  const reader = new FileReader();
+  reader.onload = function(ev){
+    preview.textContent=''; preview.style.backgroundImage = `url(${ev.target.result})`;
+    preview.style.backgroundSize = 'cover'; preview.style.backgroundPosition = 'center';
+    document.getElementById('photoInput').setAttribute('data-dataurl', ev.target.result);
+  }
+  reader.readAsDataURL(file);
+}
+function previewVideo(e){
+  const file = e.target.files[0];
+  const preview = document.getElementById('videoPreview');
+  preview.innerHTML = "Video Preview";
+  preview.style.background = "#f3f3f3";
+  if(!file){
+    preview.innerHTML = "Video Preview"; 
+    document.getElementById('videoInput').removeAttribute('data-dataurl');
+    return;
+  }
+  if (file.size > 10 * 1024 * 1024) {
+    alert("ویڈیو زیادہ بڑی ہے! براہ کرم 10MB سے کم ویڈیو اپلوڈ کریں۔");
+    document.getElementById('videoInput').value = "";
+    preview.innerHTML = "Video Preview";
+    document.getElementById('videoInput').removeAttribute('data-dataurl');
+    return;
+  }
+  const reader = new FileReader();
+  reader.onload = function(ev){
+    preview.innerHTML = `<video src="${ev.target.result}" style="max-width:100%;height:50px" controls></video>`;
+    document.getElementById('videoInput').setAttribute('data-dataurl', ev.target.result);
+  }
+  reader.readAsDataURL(file);
+}
+function submitUpload(e){
+  e.preventDefault();
+  const f = e.target;
+  const name = (f.animalName.value || 'جانور').trim();
+  const price = Number(f.price.value) || 0;
+  const breed = f.breed.value || 'other';
+  const age = f.age.value || '';
+  const city = f.city.value || '';
+  const weight = f.weight.value ? f.weight.value.trim() : '';
+  const imgData = document.getElementById('photoInput').getAttribute('data-dataurl') || '';
+  let videoData = "";
+  if(document.getElementById('videoInput').getAttribute('data-dataurl')){
+    videoData = document.getElementById('videoInput').getAttribute('data-dataurl');
+  }
+  if(!imgData){ alert('براہِ مہربانی تصویر اپلوڈ کریں'); return; }
+  const tokenPrefix = (breed && breed !== 'other') ? breed.toUpperCase().slice(0,4) : 'USR';
+  const token = uid(tokenPrefix);
+  const newItem = { name, price, breed, age, city, image: imgData, token, uploadedBy:'User' };
+  if(weight) newItem.weight = weight;
+  if(videoData) newItem.video = videoData;
+  const list = getGoats(); list.unshift(newItem); saveGoats(list);
+  toggleUpload(); renderGoats();
+  alert('آپ کا جانور اپلوڈ ہوگیا۔');
+}
+
+// Registration mini
+function showRegister(){ document.getElementById('regBox').style.display='flex'; window.scrollTo({top:0,behavior:'smooth'}); }
+function hideRegister(){ document.getElementById('regBox').style.display='none'; document.getElementById('regForm').reset(); document.getElementById('regToast').style.display='none'; }
+function submitRegister(e){
+  e.preventDefault();
+  const f = e.target;
+  const name = (f.regName.value || '').trim();
+  const city = (f.city.value || '').trim();
+  const email = (f.email.value || '').trim();
+  if(!name || !city || !email){ alert('براہِ کرم درست معلومات درج کریں'); return; }
+  const users = getUsers();
+  users.unshift({ name, city, email, registeredAt: new Date().toISOString() });
+  saveUsers(users);
+  document.getElementById('regToast').style.display='block';
+  setTimeout(()=>{ hideRegister(); document.getElementById('regToast').style.display='none'; }, 1300);
+}
+
+document.addEventListener('DOMContentLoaded', function(){
+  renderGoats();
+  window.renderGoats = renderGoats;
+  window.submitUpload = submitUpload;
+  window.submitRegister = submitRegister;
+  window.openCheckout = openCheckout;
+  window.closeCheckout = closeCheckout;
+  window.confirmCheckout = confirmCheckout;
+  window.previewPhoto = previewPhoto;
+  window.previewVideo = previewVideo;
+  window.footerSubscribe = footerSubscribe;
+  window.showEditForm = showEditForm;
+  window.closeEditBox = closeEditBox;
+  window.submitEdit = submitEdit;
+  window.toggleCornerPayModal = toggleCornerPayModal;
+  window.copyPayInfo = copyPayInfo;
+});
+</script>
+</body>
+</html>
